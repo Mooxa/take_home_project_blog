@@ -19,13 +19,15 @@ class BlogListVC: UIViewController {
 		configureSearchController()
 		configureTableView()
 		bindViewModel()
-		viewModel.fetchPosts()
-		
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.navigationController?.setNavigationBarHidden(false, animated: false)
+	}
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		viewModel.fetchPosts()
 	}
 	
 	func configureViewController() {
@@ -55,28 +57,30 @@ class BlogListVC: UIViewController {
 	func bindViewModel() {
 		viewModel.onStateChange = { [weak self] state in
 			guard let self else { return }
-			print(state)
 			self.render(state)
 		}
 	}
 	
 	private func render(_ state: ViewState<[Post]>) {
-		DispatchQueue.main.async {self.dismissLoadingView()}
 		switch state {
 			case .idle:
-				DispatchQueue.main.async {self.showLoadingView()}
-				
+				break
 			case .loading:
-				print(state)
-				showLoadingView()
+				DispatchQueue.main.async { [weak self] in
+					guard let self = self else { return }
+					self.showLoadingView()
+				}
 				
 			case .empty:
+				dismissLoadingView()
 				DispatchQueue.main.async {self.showEmptyStateView(with: "Pas d'articles pour le moment", in: self.view)}
 				
 			case .data:
+				dismissLoadingView()
 				tableView.reloadData()
 				
 			case .error(let message):
+				dismissLoadingView()
 				self.showAlert(message: message)
 		}
 	}

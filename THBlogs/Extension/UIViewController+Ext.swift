@@ -7,33 +7,48 @@
 
 import UIKit
 
-fileprivate var containerView: UIView!
+fileprivate var containerView: UIView?
 
 extension UIViewController {
+	
 	func showLoadingView() {
-		containerView = UIView(frame: view.bounds)
-		view.addSubview(containerView)
-		containerView.backgroundColor = .systemBackground
-		containerView.alpha = 0
-		UIView.animate(withDuration: 0.25) {
-			containerView.alpha = 0.8
-		}
-		let activityIndicatorView = UIActivityIndicatorView(style: .large)
-		containerView.addSubview(activityIndicatorView)
+		guard containerView == nil else { return }
 		
-		activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+		let container = UIView(frame: view.bounds)
+		container.backgroundColor = .systemBackground
+		container.alpha = 0
+		container.translatesAutoresizingMaskIntoConstraints = false
+		view.addSubview(container)
+		containerView = container
+		
+		UIView.animate(withDuration: 0.25) {
+			container.alpha = 0.8
+		}
+		
+		let activityIndicator = UIActivityIndicatorView(style: .large)
+		activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+		container.addSubview(activityIndicator)
+		activityIndicator.startAnimating()
 		
 		NSLayoutConstraint.activate([
-			activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-			activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+			activityIndicator.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+			activityIndicator.centerYAnchor.constraint(equalTo: container.centerYAnchor)
 		])
-		activityIndicatorView.startAnimating()
+		
+		NSLayoutConstraint.activate([
+			container.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			container.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+			container.topAnchor.constraint(equalTo: view.topAnchor),
+			container.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+		])
 	}
 	
 	func dismissLoadingView() {
-		DispatchQueue.main.async {
+		guard let containerView = containerView else { return }
+		UIView.animate(withDuration: 0.25, animations: {
+			containerView.alpha = 0
+		}) { _ in
 			containerView.removeFromSuperview()
-			containerView = nil
 		}
 	}
 	
