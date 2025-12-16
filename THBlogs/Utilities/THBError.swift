@@ -15,11 +15,11 @@ enum THBError: Error {
 	var message: String {
 		switch self {
 			case .invalidURL:
-				return "URL invalide"
+				return "invalid URL"
 			case .noData:
-				return "Aucune donnée reçue"
+				return "No data available"
 			case .decodingError:
-				return "Erreur de décodage"
+				return "Decoding error"
 			case .serverError(let msg):
 				return msg
 		}

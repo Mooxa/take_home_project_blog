@@ -59,8 +59,8 @@ class EmptyStateView: UIView {
 			
 			logoImageView.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
 			logoImageView.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor, constant: -30),
-			logoImageView.widthAnchor.constraint(equalToConstant: 100),
-			logoImageView.heightAnchor.constraint(equalToConstant: 100),
+			logoImageView.widthAnchor.constraint(equalToConstant: 150),
+			logoImageView.heightAnchor.constraint(equalToConstant: 150),
 			messageLabel.topAnchor.constraint(equalTo: self.logoImageView.bottomAnchor, constant: 20),
 			messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
 			messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),

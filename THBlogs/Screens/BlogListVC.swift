@@ -41,7 +41,7 @@ class BlogListVC: UIViewController {
 		searchController.searchResultsUpdater = self
 		searchController.searchBar.delegate = self
 		searchController.obscuresBackgroundDuringPresentation = false
-		searchController.searchBar.placeholder = "Rechercher"
+		searchController.searchBar.placeholder = "Search"
 		navigationItem.searchController = searchController
 	}
 	
@@ -73,7 +73,7 @@ class BlogListVC: UIViewController {
 				
 			case .empty:
 				dismissLoadingView()
-				DispatchQueue.main.async {self.showEmptyStateView(with: "Pas d'articles pour le moment", in: self.view)}
+				DispatchQueue.main.async {self.showEmptyStateView(with: "No posts Available", in: self.view)}
 				
 			case .data:
 				dismissLoadingView()
@@ -117,6 +117,8 @@ extension BlogListVC: UISearchResultsUpdating, UISearchBarDelegate {
 	func updateSearchResults(for searchController: UISearchController) {
 		guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
 		viewModel.filteredPosts = viewModel.posts.filter{ $0.body.lowercased().contains(filter.lowercased())}
+		searching = true
+		tableView.reloadData()
 		
 	}
 	

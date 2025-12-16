@@ -60,7 +60,7 @@ extension UIViewController {
 	
 	func showAlert(message: String) {
 		let alert = UIAlertController(
-			title: "Erreur",
+			title: "Error",
 			message: message,
 			preferredStyle: .alert
 		)
